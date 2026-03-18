@@ -10,26 +10,22 @@ df = pd.read_csv('data.csv')
 def monitor_wifi_signals(data):
         print("--- CSI-Cipher Security: Monitoring Live WiFi Signals ---")
         
-        # We'll use a 'sliding window' of 10 rows to calculate stability
+        
         for i in range(10, len(data)):
-            # Get the last 10 snapshots of signal amplitude
-            window = data.iloc[i-10:i, 0:5] # Checking first 5 subcarriers
             
-            # Calculate 'Movement Score' using Standard Deviation
-            # Higher SD = more movement/chaos in the signal
+            window = data.iloc[i-10:i, 0:5] 
+            
+
             movement_score = window.std().mean()
             
-            # Threshold: 2.0 is usually a 'quiet' room. 
-            # If it goes above 5.0, it means the signal is being disrupted by a human.
+
             if movement_score > 5.0:
                 print(f"!!! INTRUDER DETECTED at index {i} (Score: {movement_score:.2f}) !!!")
                 send_to_whatsapp('movement detected')
-                # --- TRIGGER YOUR WHATSAPP BOT HERE ---
-                # send_whatsapp_alert("🚨 Alert: Someone just entered your room!")
                 
-                break # Stop for now so you don't spam your phone
+                break
                 
-            time.sleep(0.05) # Simulate the speed of real Wi-Fi packets
+            time.sleep(0.05) 
 
         monitor_wifi_signals(df)
 
@@ -39,7 +35,7 @@ def monitor_room_csv(data_frame):
     baseline = data_frame.iloc[0, 0] 
     
     for index, row in data_frame.iterrows():
-        current_signal = row.iloc[30] # Signal from the first subcarrier
+        current_signal = row.iloc[30] 
         change = abs(current_signal - baseline)
 
         if change > 15:
@@ -59,9 +55,9 @@ def send_to_whatsapp(msg):
     client = Client(account_sid, auth_token)
 
     message = client.messages.create(
-    from_='whatsapp:+14155238886', # Twilio Sandbox Number
+    from_='whatsapp:+14155238886', 
     body='🚨 WiFi Sensor Alert: Movement detected!',
-    to='whatsapp:+918219291979' # Your verified number
+    to='whatsapp:+918219291979' 
     )
     print(f"Success: {msg}")
 
