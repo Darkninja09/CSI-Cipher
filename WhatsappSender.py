@@ -8,7 +8,7 @@ load_dotenv()
 
 df = pd.read_csv('data.csv') 
 def monitor_wifi_signals(data):
-        print("--- DarkBot Security: Monitoring Live WiFi Signals ---")
+        print("--- CSI-Cipher Security: Monitoring Live WiFi Signals ---")
         
         # We'll use a 'sliding window' of 10 rows to calculate stability
         for i in range(10, len(data)):
