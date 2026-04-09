@@ -4,6 +4,7 @@ import time
 import serial
 from dotenv import load_dotenv
 from twilio.rest import Client
+import datetime
 
 # Initialize
 load_dotenv()
@@ -13,6 +14,20 @@ ser = serial.Serial('COM5', 115200, timeout=1)
 COOLDOWN_SECONDS = 10  # 5 Minutes
 LAST_ALERT_TIME = 0
 
+def log_event(score):
+    """Saves detection events to a local CSV file."""
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    log_entry = f"{timestamp}, {score:.2f}\n"
+    
+    # 'a' mode means 'append' - it adds to the file without deleting old data
+    with open("security_log.csv", "a") as f:
+        # If file is empty, write a header first
+        if os.stat("security_log.csv").st_size == 0:
+            f.write("Timestamp, Movement_Score\n")
+        f.write(log_entry)
+    print(f"📁 Event logged to security_log.csv")
+
+    
 def send_to_whatsapp(msg):
     global LAST_ALERT_TIME
     current_time = time.time()
