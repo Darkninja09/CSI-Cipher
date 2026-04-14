@@ -2,3 +2,6 @@ pandas
 pyserial
 python-dotenv
 twilio
+matplotlib
+scikit-learn
+numpy
